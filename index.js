@@ -1,10 +1,11 @@
-const Manager = require('./Manager');
-const Intern = require('./Intern');
-const Engineer = require('./Engineer');
+const Manager = require('./lib/Manager');
+const Intern = require('./lib/Intern');
+const Engineer = require('./lib/Engineer');
 const inquirer = require('inquirer');
 const fs = require('fs');
 const path = require('path');
-const html = require('./genHTML.js');
+const html = require('./source/genHTML.js');
+const { start } = require('repl');
 const distribution = path.resolve(__dirname, 'dist');
 const outIndex = path.join(distribution, 'index.html');
 const team = [];
@@ -35,7 +36,7 @@ function promptUser() {
     ]).then(response => {
         const manager = new Manager(response.ManagerName, response.ManagerID, response.Email, response.officeNumber);
         team.push(manager);
-    //add team member?
+        newTeamMember();
     })
 }
 
@@ -59,14 +60,44 @@ function promptEngineer() {
         {
             type: 'input',
             name: 'github',
-            message: "What is your github username?",
+            message: "What is your engineer's github username?",
         },
     ]).then(response => {
         const engineer = new Engineer(response.EngineerName, response.EngineerID, response.Email, response.github);
         team.push(engineer);
-    //add team member?
+        newTeamMember();
     })
 }
+
+function promptIntern() {
+    inquirer.prompt([
+        {
+            type: 'input',
+            name: 'InternName',
+            message: "What is your Intern's name?",
+        },
+        {
+            type: 'input',
+            name: 'InternID',
+            message: "What is your intern's ID?",
+        },
+        {
+            type: 'input',
+            name: 'Email',
+            message: "What is your engineer's email?",
+        },
+        {
+            type: 'input',
+            name: 'school',
+            message: "What is your interns school?",
+        },
+    ]).then(response => {
+        const intern = new Intern(response.InternName, response.InternID, response.Email, response.school);
+        team.push(intern);
+        newTeamMember();
+    })
+}
+
 
 function newTeamMember() {
     inquirer.prompt ([
@@ -89,3 +120,12 @@ function newTeamMember() {
         }
     })
 }
+
+function generateTeam() {
+    fs.writeFileSync(outIndex, html(team), function (err){
+        if (err) {
+            throw err;
+        }
+    }); //genHTML line 75 notes linked here to html(team)
+}
+promptUser();
