@@ -14,3 +14,5 @@ OPP is a team-member info page generater.
 
 * Each member has a unique characteristic: Manager- office number, Engineer- Github, Intern- school.
 
+# Sample Video
+https://watch.screencastify.com/v/qDLUzGrtNO9W99Y9KUyB
