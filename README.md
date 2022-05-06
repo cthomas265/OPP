@@ -1,6 +1,6 @@
 # OPP
 
-OPP is a team-member info page generater.
+OPP is a team-member info page generater demonstraiting OOP.
 
 ## Summary
 
